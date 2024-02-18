@@ -1,7 +1,6 @@
 package commandsfactory;
 
 import commands.*;
-
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public class CommandsFactory {
     private void loadCommands(String src) {
         Reader reader = null;
         StringBuilder jsonString;
-        InputStream inputStream = getClass().getResourceAsStream(src);
+        InputStream inputStream = CommandsFactory.class.getResourceAsStream(src);
         if (inputStream == null) {
             return;
         }
