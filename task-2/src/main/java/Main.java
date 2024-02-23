@@ -21,12 +21,19 @@ public class Main {
                 return;
             }
         }
-        CommandsFactory factory = new CommandsFactory();
+
+        CommandsFactory factory;
+        try {
+            factory = new CommandsFactory();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
+            return;
+        }
         StackCalculator calculator = new StackCalculator(factory);
         while (scanner.hasNextLine()) {
             try {
                 calculator.execute(scanner.nextLine());
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 logger.warn(e.getLocalizedMessage());
             }
         }

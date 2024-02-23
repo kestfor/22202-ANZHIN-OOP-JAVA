@@ -10,9 +10,9 @@ public class CommandsFactory {
 
     HashMap<String, Command> _factory;
     private static final int buffSize = 1000;
-    private final String configFile = "fabricConfig.json";
+    private final String configFile = "/fabricConfig.json";
 
-    public CommandsFactory() {
+    public CommandsFactory() throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         _factory = new HashMap<>();
         this.loadCommands(configFile);
     }
@@ -29,7 +29,7 @@ public class CommandsFactory {
         }
     }
 
-    private void loadCommands(String src) {
+    private void loadCommands(String src) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Reader reader = null;
         StringBuilder jsonString;
         InputStream inputStream = CommandsFactory.class.getResourceAsStream(src);
@@ -44,23 +44,15 @@ public class CommandsFactory {
                 jsonString.append(String.valueOf(buffer));
             }
         } catch (IOException e) {
-            throw new RuntimeException("can't read file");
+            throw new RuntimeException("can't read config file");
         } finally {
             if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace(System.err);
-                }
+                reader.close();
             }
         }
         JSONObject jsonObject = new JSONObject(jsonString.toString());
         for (String key : jsonObject.keySet()) {
-            try {
-                _factory.put(key, createCommand(jsonObject.getString(key)));
-            } catch (Exception e) {
-                System.out.println(e.getLocalizedMessage());
-            }
+            _factory.put(key, createCommand(jsonObject.getString(key)));
         }
     }
 }
