@@ -1,15 +1,17 @@
 package commands;
 
 import java.util.List;
-import java.util.MissingFormatArgumentException;
+
+import commands.exceptions.IllegalAccessException;
 import executioncontext.ExecutionContext;
+import commands.exceptions.*;
 
 public class PushCommand extends Command{
 
     @Override
-    public void execute(ExecutionContext context, List<String> positionalArgs) throws IllegalArgumentException {
+    public void execute(ExecutionContext context, List<String> positionalArgs) throws CommandsException {
         if (positionalArgs.isEmpty()) {
-            throw new MissingFormatArgumentException("missed push argument");
+            throw new WrongFormatException("missed push argument");
         }
         String stringValue = positionalArgs.get(0);
         try {
@@ -17,7 +19,7 @@ public class PushCommand extends Command{
             context.getStack().push(value);
         } catch (NumberFormatException e) {
             if (!context.getNamedArgs().containsKey(stringValue)) {
-                throw new IllegalArgumentException("there is no defined value with name '" + stringValue + "'");
+                throw new IllegalAccessException("there is no defined value with name '" + stringValue + "'");
             } else {
                 context.getStack().push(context.getNamedArgs().get(stringValue));
             }

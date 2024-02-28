@@ -22,20 +22,11 @@ public class Main {
             }
         }
 
-        CommandsFactory factory;
-        try {
-            factory = new CommandsFactory();
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
-            return;
-        }
+        CommandsFactory factory = new CommandsFactory();
         StackCalculator calculator = new StackCalculator(factory);
         while (scanner.hasNextLine()) {
-            try {
-                calculator.execute(scanner.nextLine());
-            } catch (Exception e) {
-                logger.warn(e.getLocalizedMessage());
-            }
+            calculator.execute(scanner.nextLine());
         }
+        scanner.close();
     }
 }

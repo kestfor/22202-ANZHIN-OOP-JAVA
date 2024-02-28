@@ -1,13 +1,13 @@
 package commands.arithmetic;
 
-import commands.arithmetic.ArithmeticCommand;
+import commands.exceptions.CommandsException;
 import executioncontext.ExecutionContext;
 
 import java.util.List;
 
 public class SubCommand extends ArithmeticCommand {
     @Override
-    public void execute(ExecutionContext context, List<String> positionalArgs) throws IllegalAccessException {
+    public void execute(ExecutionContext context, List<String> positionalArgs) throws CommandsException {
         super.execute(context, positionalArgs);
         context.getStack().push(context.getStack().pop() - context.getStack().pop());
     }
