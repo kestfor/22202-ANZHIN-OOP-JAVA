@@ -1,7 +1,5 @@
 package commands;
-
 import java.util.List;
-
 import commands.exceptions.IllegalAccessException;
 import executioncontext.ExecutionContext;
 import commands.exceptions.*;

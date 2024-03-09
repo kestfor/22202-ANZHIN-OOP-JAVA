@@ -4,7 +4,10 @@ import commands.*;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import org.json.*;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +17,6 @@ public class CommandsFactory {
 
     public static final Logger logger = LoggerFactory.getLogger(CommandsFactory.class);
 
-    private static final int buffSize = 1000;
     private final String configFile = "/fabricConfig.json";
 
     public CommandsFactory() {
@@ -35,35 +37,24 @@ public class CommandsFactory {
     }
 
     private void loadCommands(String src) {
-        Reader reader = null;
-        StringBuilder jsonString;
         InputStream inputStream = CommandsFactory.class.getResourceAsStream(src);
         if (inputStream == null) {
             return;
         }
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject;
         try {
-            reader = new InputStreamReader(inputStream);
-            jsonString = new StringBuilder();
-            char[] buffer = new char[buffSize];
-            while (reader.read(buffer, 0, buffSize) != -1) {
-                jsonString.append(String.valueOf(buffer));
-            }
+            jsonObject = (JSONObject) parser.parse(new InputStreamReader(inputStream));
         } catch (IOException e) {
-            logger.error("can't read config file");
+            logger.error("cant read config file");
             return;
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    logger.error(e.getLocalizedMessage());
-                }
-            }
+        } catch (ParseException e) {
+            logger.error("cant parse config file");
+            return;
         }
-        JSONObject jsonObject = new JSONObject(jsonString.toString());
-        for (String key : jsonObject.keySet()) {
+        for (Object key : jsonObject.keySet()) {
             try {
-                _factory.put(key, createCommand(jsonObject.getString(key)));
+                _factory.put(key.toString(), createCommand(jsonObject.get(key).toString()));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage());
             }

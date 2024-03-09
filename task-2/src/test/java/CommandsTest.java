@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
+import commands.exceptions.*;
 
 public class CommandsTest {
 
@@ -25,7 +26,7 @@ public class CommandsTest {
         List<String> args = new ArrayList<>();
         try {
             command.execute(context, args);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
         }
         try {
@@ -44,7 +45,7 @@ public class CommandsTest {
         List<String> args = new ArrayList<>();
         try {
             command.execute(context, args);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
         }
         try {
@@ -63,7 +64,7 @@ public class CommandsTest {
         List<String> args = new ArrayList<>();
         try {
             command.execute(context, args);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
         }
         try {
@@ -82,7 +83,7 @@ public class CommandsTest {
         List<String> args = new ArrayList<>();
         try {
             command.execute(context, args);
-        } catch (IllegalAccessException e) {
+        } catch (CommandsException e) {
             System.err.println(e.getLocalizedMessage());
         }
         try {
@@ -105,7 +106,7 @@ public class CommandsTest {
             def.execute(context, args);
             args.remove(1);
             push.execute(context, args);
-        } catch (IllegalAccessException e) {
+        } catch (CommandsException e) {
             System.err.println(e.getLocalizedMessage());
         }
         try {
@@ -116,31 +117,27 @@ public class CommandsTest {
         }
     }
 
-    @Test(expected = IllegalAccessException.class)
-    public void addExceptionTest() throws IllegalAccessException {
+    @Test(expected = CommandsException.class)
+    public void addExceptionTest() throws CommandsException {
         Command command = new AddCommand();
         context.getStack().push(1.0);
         List<String> args = new ArrayList<>();
         command.execute(context, args);
-        try {
-            double val = context.getStack().peek();
-            Assert.assertEquals(3.0, val, 0.0);
-        } catch (EmptyStackException e) {
-            System.err.println(e.getLocalizedMessage());
-        }
     }
 
-    @Test(expected = IllegalAccessException.class)
-    public void popExceptionTest() throws IllegalAccessException {
+    @Test(expected = CommandsException.class)
+    public void popExceptionTest() throws CommandsException {
         Command command = new PopCommand();
         List<String> args = new ArrayList<>();
         command.execute(context, args);
-        try {
-            double val = context.getStack().peek();
-            Assert.assertEquals(3.0, val, 0.0);
-        } catch (EmptyStackException e) {
-            System.err.println(e.getLocalizedMessage());
-        }
     }
 
+    @Test(expected = DivisionByZeroException.class)
+    public void divisionByZeroExceptionTest() throws CommandsException {
+        Command command = new DivCommand();
+        context.getStack().push(0.0);
+        context.getStack().push(0.0);
+        List<String> args = new ArrayList<>();
+        command.execute(context, args);
+    }
 }
