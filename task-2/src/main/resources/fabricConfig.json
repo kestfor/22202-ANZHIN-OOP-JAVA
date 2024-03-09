@@ -1,0 +1,11 @@
+{
+  "+": "commands.arithmetic.AddCommand",
+  "-": "commands.arithmetic.SubCommand",
+  "*": "commands.arithmetic.MulCommand",
+  "/": "commands.arithmetic.DivCommand",
+  "SQRT": "commands.arithmetic.SqrtCommand",
+  "DEFINE": "commands.DefineCommand",
+  "POP": "commands.PopCommand",
+  "PRINT": "commands.PrintCommand",
+  "PUSH": "commands.PushCommand"
+}
