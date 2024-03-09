@@ -37,5 +37,4 @@ public class ValidatorTest {
         Assert.assertEquals(riddler.getAmountOufBulls(4321), 0);
         Assert.assertEquals(riddler.getAmountOufBulls(1234), 4);
     }
-
 }

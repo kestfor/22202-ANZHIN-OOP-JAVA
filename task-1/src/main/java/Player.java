@@ -18,7 +18,13 @@ public class Player {
     }
 
     public void makeGuess() throws InputMismatchException {
-        int guess = scanner.nextInt();
-        setGuess(guess);
+        String guess = scanner.next();
+        int intGuess;
+        try {
+            intGuess = Integer.parseInt(guess);
+        } catch (NumberFormatException e) {
+            throw new InputMismatchException();
+        }
+        setGuess(intGuess);
     }
 }
