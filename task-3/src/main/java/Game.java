@@ -1,19 +1,19 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
 
 public class Game implements KeyListener, Runnable {
     final private JFrame frame;
-    final private GamePanel gamePanel;
+    final private DrawController drawController;
 
-    final private Snake snake;
+    private Snake snake;
 
-    final private SnakeMoveController snakeMoveController;
-
-    private Snake.Directions lastDirection = Snake.Directions.right;
+    private SnakeMoveController snakeMoveController;
 
     final private Field field;
+
+    private Apple apple;
 
     final private int FPS = 60;
 
@@ -22,10 +22,14 @@ public class Game implements KeyListener, Runnable {
         int centerY = (settings.windowHeight - settings.cellSize * settings.rows) / 2;
 
         field = new Field(centerX, centerY, settings.columns, settings.rows, settings.cellSize);
-        snake = new Snake(field.getCell(0, 0));
-        snakeMoveController = new SnakeMoveController(snake, field, 10000000);
 
-        gamePanel = new GamePanel(settings.windowWidth, settings.windowHeight, snake, field);
+        snake = new Snake(field.getCell(0, 0));
+
+        apple = new Apple(getRandomAvailable(field.getArray(), snake.getBodyArray()));
+
+        snakeMoveController = new SnakeMoveController(snake, field, 5000000);
+
+        drawController = new DrawController(settings.windowWidth, settings.windowHeight, Arrays.asList(field, apple, snake));
 
         frame = new JFrame("Snake");
         frame.addKeyListener(this);
@@ -33,9 +37,7 @@ public class Game implements KeyListener, Runnable {
         frame.setResizable(false);
 
 
-        frame.add(gamePanel);
-        //frame.add(field);
-//        frame.add(snake);
+        frame.add(drawController);
 
         frame.pack();
 
@@ -43,33 +45,80 @@ public class Game implements KeyListener, Runnable {
         frame.setVisible(true)  ;
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        lastDirection = handleKey(e);
+    private static boolean isFree(Cell cellToCheck, Cell[] taken) {
+        for (Cell value : taken) {
+            if (value.equals(cellToCheck)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static public Cell getRandomAvailable(Cell[][] field, Cell[] taken) {
+
+        int startRow = (int) Math.floor(Math.random() *(field.length));
+        int startColumn = (int) Math.floor(Math.random() * (field[0].length));
+        for (int i = startRow; i < field.length; i++) {
+            for (int j = startColumn; j < field[i].length; j++) {
+                if (isFree(field[i][j], taken)) {
+                    return field[i][j];
+                }
+            }
+        }
+
+        for (int i = 0; i < startRow; i++) {
+            for (int j = 0; j < startColumn; j++) {
+                if (isFree(field[i][j], taken)) {
+                    return field[i][j];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private void standardKeyHandle(KeyEvent e) {
+        if (drawController.isOver) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                snake = new Snake(field.getCell(0, 0));
+                apple.setCell(getRandomAvailable(field.getArray(), snake.getBodyArray()));
+                drawController.reset();
+                drawController.setObjects(Arrays.asList(field, apple, snake));
+                snakeMoveController = new SnakeMoveController(snake, field, 5000000);
+                drawController.isOver = false;
+            }
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            drawController.isPaused = !drawController.isPaused;
+        }
+
+        Snake.Directions lastDirection = getDirection(e);
         if (lastDirection == null) {
             return;
         }
-        snakeMoveController.setDirection(lastDirection);
+        if (!drawController.isPaused) {
+            snakeMoveController.setDirection(lastDirection);
+        }
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-
+    public void keyTyped(KeyEvent e) {
+        standardKeyHandle(e);
     }
+
+    @Override
+    public void keyPressed(KeyEvent e) {}
 
     @Override
     public void keyReleased(KeyEvent e) {
-        lastDirection = handleKey(e);
-        if (lastDirection == null) {
-            return;
-        }
-        snakeMoveController.setDirection(lastDirection);
+       standardKeyHandle(e);
     }
 
 
     @Override
     public void run() {
-        double drawInterval = 1000000000/FPS;
+        double drawInterval = (double) 1000000000/FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -78,21 +127,36 @@ public class Game implements KeyListener, Runnable {
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
 
-            if (!snakeMoveController.isCollision()) {
-                snakeMoveController.move();
-            } else {
-                gamePanel.isOver = true;
+            if (!drawController.isPaused && !drawController.isOver) {
+                if (!snakeMoveController.isCollision()) {
+                    Cell tail = snakeMoveController.move();
+                    if (tail != null) {
+                        if (snake.getHead().equals(apple.cell)) {
+                            snake.add(tail);
+                            drawController.setScore(drawController.getScore() + 1);
+                            Cell newCell = getRandomAvailable(field.getArray(), snake.getBodyArray());
+                            if (newCell != null) {
+                                apple.setCell(newCell);
+                            } else {
+                                drawController.isOver = true;
+                            }
+                        }
+                    }
+                } else {
+                    drawController.isOver = true;
+                }
             }
 
             if (delta >= 1) {
-                gamePanel.repaint();
+                drawController.repaint();
                 delta--;
             }
-
         }
     }
 
-        private Snake.Directions handleKey(KeyEvent e) {
+
+
+        private Snake.Directions getDirection(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_LEFT:
                 return Snake.Directions.left;

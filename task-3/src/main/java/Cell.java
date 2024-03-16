@@ -1,7 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
 
-public class Cell extends JPanel {
+public class Cell implements Drawable{
     public final int leftX;
     public final int rightX;
     public final int topY;
@@ -21,6 +20,14 @@ public class Cell extends JPanel {
         this.bottomY = topY + size;
         this.borderColor = borderColor;
         this.mainColor = mainColor;
+    }
+
+    void setBorderColor(Color newColor) {
+        this.borderColor = newColor;
+    }
+
+    Color getBorderColor() {
+        return borderColor;
     }
 
     Cell(int x, int y, int size, Color mainColor) {
@@ -43,10 +50,14 @@ public class Cell extends JPanel {
         return new Cell(this.leftX, this.topY, this.size, this.mainColor, this.borderColor);
     }
 
+    boolean equals(Cell cell) {
+        return this.topY == cell.topY && this.leftX == cell.leftX && this.size == cell.size;
+    }
+
     @Override
-    public void paintComponent(Graphics g) {
-        g.setColor(borderColor);
-        g.drawRect(leftX, topY, size, size);
+    public void draw(Graphics g) {
+//        g.setColor(borderColor);
+//        g.drawRect(leftX, topY, size, size);
         g.setColor(mainColor);
         g.fillRect(leftX, topY, size, size);
     }

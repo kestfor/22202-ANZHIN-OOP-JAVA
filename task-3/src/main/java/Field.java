@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Field {
+public class Field implements Drawable{
     private final Cell[][] field;
     private final int cellSize;
     private final int columns;
@@ -26,9 +26,12 @@ public class Field {
     }
 
     private void initializeField() {
+        Color green = new Color(92, 224, 0, 255);
+        Color lightGreen = new Color(157, 246, 61);
         for (int i = 0; i < rows; i++) {
+
             for (int j = 0; j < columns; j++) {
-                field[i][j] = new Cell(leftX + j * cellSize, topY + i * cellSize, cellSize, (i + j) % 2 == 0 ? Color.GREEN : Color.LIGHT_GRAY);
+                field[i][j] = new Cell(leftX + j * cellSize, topY + i * cellSize, cellSize, (i + j) % 2 > 0 ? green : lightGreen);
             }
         }
     }
@@ -36,11 +39,12 @@ public class Field {
     private void paintField(Graphics g) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                field[i][j].paintComponent(g);
+                field[i][j].draw(g);
             }
         }
     }
 
+    @Override
     public void draw(Graphics g) {
         paintField(g);
     }
@@ -71,6 +75,10 @@ public class Field {
 
     public int getAmountColumns() {
         return columns;
+    }
+
+    public Cell[][] getArray() {
+        return field;
     }
 
 }
