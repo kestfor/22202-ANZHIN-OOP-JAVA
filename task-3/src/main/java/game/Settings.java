@@ -12,13 +12,13 @@ public class Settings extends Observable implements Observer {
 
     private Pair<Integer, Integer> fieldSize;
     private int snakeSpeed;
-    private int cellSize;
+    private final int cellSize;
     public final int windowHeight;
     public final int windowWidth;
 
 
-    public Settings(int rows, int columns, int cellSize, int windowHeight, int windowWidth, int snakeSpeed) {
-        this.setSize(new Pair<>(rows, columns));
+    public Settings(Pair<Integer, Integer> fieldSize, int cellSize, int windowHeight, int windowWidth, int snakeSpeed) {
+        this.setSize(fieldSize);
         this.cellSize = cellSize;
         this.windowHeight = windowHeight;
         this.windowWidth = windowWidth;

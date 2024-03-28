@@ -29,9 +29,11 @@ public class SnakeGame extends JFrame implements Observer {
 
     public static void main(String[] args) {
         SnakeGame snakeGame = new SnakeGame();
+
         snakeGame.setSize(new Dimension(1280, 720));
         snakeGame.setTitle("snake game");
-        snakeGame.settings = new Settings(3, 4, 40, 720, 1280, 10000000);
+
+        snakeGame.settings = new Settings(FieldMenuSection.sizes.get(FieldMenuSection.FieldSizes.standard), 40, 720, 1280, SnakeSpeedMenuSection.speed.get(SnakeSpeedMenuSection.SnakeSpeed.standard));
         snakeGame.gameModel = new GameModel(snakeGame.settings);
         snakeGame.gamePanel = new GamePanel(snakeGame.gameModel);
         snakeGame.gameController = new GameController(snakeGame.gameModel, snakeGame.gamePanel);

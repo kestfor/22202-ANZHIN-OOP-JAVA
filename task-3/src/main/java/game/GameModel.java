@@ -35,11 +35,6 @@ public class GameModel {
 
     }
 
-//    public void rebuild() {
-//        this.snake.reset(field.getCell(0, 0), Snake.Directions.right);
-//        this.apple.setCell(Utils.getRandomAvailable(field.getArray(), snake.getBodyArray()));
-//    }
-
     public GameState getGameState() {
         return gameState;
     }
@@ -67,12 +62,5 @@ public class GameModel {
     public int getScore() {
         return score;
     }
-
-//    public void restart() {
-//        this.score = 0;
-//        this.snake.reset(field.getCell(0, 0), Snake.Directions.right);
-//        this.apple.setCell(Utils.getRandomAvailable(field.getArray(), snake.getBodyArray()));
-//        this.gameState = GameState.active;
-//    }
 
 }

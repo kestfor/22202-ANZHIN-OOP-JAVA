@@ -13,7 +13,7 @@ public class SnakeSpeedMenuSection extends MenuSection {
         fast,
     }
 
-    final private HashMap<SnakeSpeed, Integer> speed = new HashMap<SnakeSpeed, Integer>() {
+    final public static HashMap<SnakeSpeed, Integer> speed = new HashMap<SnakeSpeed, Integer>() {
         {
             put(SnakeSpeed.slow, 20000000);
             put(SnakeSpeed.standard, 10000000);

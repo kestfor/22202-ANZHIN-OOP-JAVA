@@ -16,7 +16,7 @@ public class FieldMenuSection extends MenuSection {
         big,
     }
 
-    final private HashMap<FieldSizes, Pair<Integer, Integer>> sizes = new HashMap<FieldSizes, Pair<Integer, Integer>>() {
+    final public static HashMap<FieldSizes, Pair<Integer, Integer>> sizes = new HashMap<FieldSizes, Pair<Integer, Integer>>() {
         {
             put(FieldSizes.small, new Pair<>(6, 6));
             put(FieldSizes.standard, new Pair<>(10, 10));
