@@ -1,27 +1,30 @@
+package snake;
+import cell.Cell;
+import field.Field;
+
 public class SnakeMoveController {
     private Snake.Directions direction;
-
-    private final long timeToMove;
-
     private long lastMoveTime;
     private final Snake snake;
 
     private boolean collision = false;
-
-
     private final Field field;
 
-    public SnakeMoveController(Snake snake, Field field, long timeToMove) {
+    public SnakeMoveController(Snake snake, Field field) {
         this.snake = snake;
         this.field = field;
         this.direction =  Snake.Directions.right;
         this.lastMoveTime = 0;
-        this.timeToMove = timeToMove;
     }
 
-    public void reset() {
+    public void restart(Snake.Directions direction) {
         this.lastMoveTime = 0;
         this.collision = false;
+        this.direction = direction;
+    }
+
+    public void restart() {
+        this.restart(Snake.Directions.right);
     }
 
     public void setDirection(Snake.Directions direction) {
@@ -75,32 +78,34 @@ public class SnakeMoveController {
     private boolean checkSnakeCollision(Snake.Directions direction, Snake snake) {
         switch (direction) {
             case right: {
-                return !inBody(snake.getHead().leftX + snake.getHead().size, snake.getHead().topY, snake);
+                return notInBody(snake.getHead().leftX + snake.getHead().size, snake.getHead().topY, snake);
             }
             case left: {
-                return !inBody(snake.getHead().leftX - snake.getHead().size, snake.getHead().topY, snake);
+                return notInBody(snake.getHead().leftX - snake.getHead().size, snake.getHead().topY, snake);
             }
             case up: {
-                return !inBody(snake.getHead().leftX, snake.getHead().topY - snake.getHead().size, snake);
+                return notInBody(snake.getHead().leftX, snake.getHead().topY - snake.getHead().size, snake);
             }
             case down: {
-                return !inBody(snake.getHead().leftX, snake.getHead().topY + snake.getHead().size, snake);
+                return notInBody(snake.getHead().leftX, snake.getHead().topY + snake.getHead().size, snake);
             }
         }
         return false;
     }
 
-    private boolean inBody(int leftX, int topY, Snake snake) {
+    private boolean notInBody(int leftX, int topY, Snake snake) {
         for (Cell cell : snake.getBody()) {
-            if (cell.topY == topY && cell.leftX == leftX) {
-                return true;
+            if (cell.topY == topY && cell.leftX == leftX && !cell.equals(snake.getTail())) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
+    //returns tail cell of snake that was moved
     public Cell move() {
-        if (lastMoveTime >= timeToMove) {
+        if (lastMoveTime >= this.snake.getSpeed()) {
+            snake.setDirection(direction);
             if (checkFieldCollision(direction, snake.getHead(), field) && checkSnakeCollision(direction, snake)) {
                 Cell returnVal = snake.getTail().copy();
                 snake.move(direction);
@@ -119,5 +124,4 @@ public class SnakeMoveController {
     public boolean isCollision() {
         return collision;
     }
-
 }
