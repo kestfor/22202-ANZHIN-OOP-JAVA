@@ -31,7 +31,7 @@ public class SnakeGame extends JFrame implements Observer {
         SnakeGame snakeGame = new SnakeGame();
         snakeGame.setSize(new Dimension(1280, 720));
         snakeGame.setTitle("snake game");
-        snakeGame.settings = new Settings(10, 10, 40, 720, 1280, 10000000);
+        snakeGame.settings = new Settings(3, 4, 40, 720, 1280, 10000000);
         snakeGame.gameModel = new GameModel(snakeGame.settings);
         snakeGame.gamePanel = new GamePanel(snakeGame.gameModel);
         snakeGame.gameController = new GameController(snakeGame.gameModel, snakeGame.gamePanel);
@@ -54,13 +54,11 @@ public class SnakeGame extends JFrame implements Observer {
     @Override
     public void notify(Event event) {
         if (event instanceof NewFieldSizeEvent) {
-            System.out.println("field size event");
             this.settings.setSize(((NewFieldSizeEvent) event).getNewSize());
             this.gameModel.getField().resize(this.settings.getSize());
             this.gameController.restart();
         }
         if (event instanceof NewSnakeSpeedEvent) {
-            System.out.println("snake speed event");
             this.settings.setSnakeSpeed(((NewSnakeSpeedEvent) event).getNewSpeed());
             this.gameModel.getSnake().setSpeed(this.settings.getSnakeSpeed());
             this.gameController.restart();

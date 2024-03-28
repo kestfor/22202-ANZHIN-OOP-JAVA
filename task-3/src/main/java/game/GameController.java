@@ -53,7 +53,11 @@ public class GameController implements Runnable, KeyListener {
                             if (newCell != null) {
                                 gameModel.getApple().setCell(newCell);
                             } else {
-                                gameModel.setGameState(GameModel.GameState.over);
+                                if (gameModel.getSnake().getBody().size() == gameModel.getField().getAmountColumns() * gameModel.getField().getAmountRows()) {
+                                    gameModel.setGameState(GameModel.GameState.win);
+                                } else {
+                                    gameModel.setGameState(GameModel.GameState.over);
+                                }
                             }
                         }
                     }

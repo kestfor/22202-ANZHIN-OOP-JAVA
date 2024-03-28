@@ -7,26 +7,24 @@ public class Utils {
 
         int startRow = (int) Math.floor(Math.random() *(field.length));
         int startColumn = (int) Math.floor(Math.random() * (field[0].length));
+
         for (int i = startRow; i < field.length; i++) {
-            for (int j = startColumn; j < field[i].length; j++) {
+            int start = i == startRow ? startColumn : 0;
+            for (int j = start; j < field[i].length; j++) {
                 if (isFree(field[i][j], taken)) {
                     return field[i][j];
                 }
             }
         }
 
-        for (int i = 0; i < startRow; i++) {
-            for (int j = 0; j < startColumn; j++) {
+        for (int i = 0; i <= startRow; i++) {
+            int end = i == startRow ? startColumn : field[i].length;
+            for (int j = 0; j < end; j++) {
                 if (isFree(field[i][j], taken)) {
                     return field[i][j];
                 }
             }
         }
-
-        System.out.println(startRow);
-        System.out.println(startColumn);
-        System.out.println("not found");
-
 
         return null;
     }

@@ -67,7 +67,7 @@ public class GamePanel extends JPanel {
 
         int x = this.getWidth() / 2;
         int y = 100;
-        g.drawString("Congratulations, you won the game", x - 310, y);
+        g.drawString("Congratulations, you won the game!", x - 350, y);
     }
 
     @Override
@@ -92,6 +92,7 @@ public class GamePanel extends JPanel {
                 paintGameInit(g);
                 break;
             case win:
+                paintGameWin(g);
                 break;
         }
 
