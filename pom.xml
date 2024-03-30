@@ -18,6 +18,7 @@
 
   <modules>
     <module>task-3</module>
+    <module>task-1</module>
   </modules>
 
   <dependencies>
