@@ -1,12 +1,7 @@
 package game;
-import events.Event;
-import events.NewFieldSizeEvent;
 import service.Observable;
 import service.Observer;
 import utils.Pair;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Settings extends Observable implements Observer {
 

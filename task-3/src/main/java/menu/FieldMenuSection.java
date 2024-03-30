@@ -4,10 +4,7 @@ import game.Settings;
 import utils.Pair;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Map;
 
 public class FieldMenuSection extends MenuSection {
     public enum FieldSizes {
@@ -29,19 +26,13 @@ public class FieldMenuSection extends MenuSection {
         super(name);
 
         JMenuItem small = new JMenuItem("small");
-        small.addActionListener((e) -> {
-                gameSettings.notify(new NewFieldSizeEvent(sizes.get(FieldSizes.small)));
-        });
+        small.addActionListener((e) -> gameSettings.notify(new NewFieldSizeEvent(sizes.get(FieldSizes.small))));
 
         JMenuItem standard = new JMenuItem("standard");
-        standard.addActionListener((e) -> {
-                gameSettings.notify(new NewFieldSizeEvent(sizes.get(FieldSizes.standard)));
-        });
+        standard.addActionListener((e) -> gameSettings.notify(new NewFieldSizeEvent(sizes.get(FieldSizes.standard))));
 
         JMenuItem big = new JMenuItem("big");
-        big.addActionListener((e) -> {
-                gameSettings.notify(new NewFieldSizeEvent(sizes.get(FieldSizes.big)));
-        });
+        big.addActionListener((e) -> gameSettings.notify(new NewFieldSizeEvent(sizes.get(FieldSizes.big))));
 
 
         this.add(small);

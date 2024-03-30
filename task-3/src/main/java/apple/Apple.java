@@ -2,11 +2,6 @@ package apple;
 
 import cell.Cell;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
 public class Apple {
 
     public Cell cell;

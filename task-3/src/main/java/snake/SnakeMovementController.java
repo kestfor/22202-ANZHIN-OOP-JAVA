@@ -2,7 +2,7 @@ package snake;
 import cell.Cell;
 import field.Field;
 
-public class SnakeMoveController {
+public class SnakeMovementController {
     private Snake.Directions direction;
     private long lastMoveTime;
     private final Snake snake;
@@ -10,7 +10,7 @@ public class SnakeMoveController {
     private boolean collision = false;
     private final Field field;
 
-    public SnakeMoveController(Snake snake, Field field) {
+    public SnakeMovementController(Snake snake, Field field) {
         this.snake = snake;
         this.field = field;
         this.direction =  Snake.Directions.right;

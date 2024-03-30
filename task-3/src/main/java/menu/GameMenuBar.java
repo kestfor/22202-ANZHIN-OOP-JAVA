@@ -1,7 +1,6 @@
 package menu;
 
 import javax.swing.*;
-import java.util.List;
 
 public class GameMenuBar extends JMenuBar {
 

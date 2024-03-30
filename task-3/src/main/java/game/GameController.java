@@ -2,7 +2,7 @@ package game;
 
 import cell.Cell;
 import snake.Snake;
-import snake.SnakeMoveController;
+import snake.SnakeMovementController;
 import utils.Utils;
 
 import java.awt.event.KeyEvent;
@@ -10,21 +10,21 @@ import java.awt.event.KeyListener;
 
 public class GameController implements Runnable, KeyListener {
 
-    private GameModel gameModel;
-    private SnakeMoveController snakeMoveController;
-    private GamePanel gamePanel;
+    private final GameModel gameModel;
+    private final SnakeMovementController snakeMovementController;
+    private final GamePanel gamePanel;
 
     public GameController(GameModel gameModel, GamePanel gamePanel) {
         this.gameModel = gameModel;
         this.gamePanel = gamePanel;
-        this.snakeMoveController = new SnakeMoveController(gameModel.getSnake(), gameModel.getField());
+        this.snakeMovementController = new SnakeMovementController(gameModel.getSnake(), gameModel.getField());
     }
 
     public void restart() {
         this.gameModel.setScore(0);
         this.gameModel.getSnake().reset(this.gameModel.getField().getCell(0, 0), Snake.Directions.right);
         this.gameModel.getApple().setCell(Utils.getRandomAvailable(this.gameModel.getField().getArray(), this.gameModel.getSnake().getBodyArray()));
-        this.snakeMoveController.restart();
+        this.snakeMovementController.restart();
         this.gameModel.setGameState(GameModel.GameState.init);
     }
 
@@ -43,8 +43,8 @@ public class GameController implements Runnable, KeyListener {
             GameModel.GameState currGameState = gameModel.getGameState();
 
             if (currGameState == GameModel.GameState.active) {
-                if (!snakeMoveController.isCollision()) {
-                    Cell tail = snakeMoveController.move();
+                if (!snakeMovementController.isCollision()) {
+                    Cell tail = snakeMovementController.move();
                     if (tail != null) {
                         if (gameModel.getSnake().getHead().equals(gameModel.getApple().getCell())) {
                             gameModel.getSnake().add(tail);
@@ -101,7 +101,7 @@ public class GameController implements Runnable, KeyListener {
         }
         if (gameModel.getGameState() == GameModel.GameState.active) {
 
-            snakeMoveController.setDirection(lastDirection);
+            snakeMovementController.setDirection(lastDirection);
         }
     }
 

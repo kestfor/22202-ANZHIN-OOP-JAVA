@@ -1,6 +1,4 @@
 package snake;
-
-import java.awt.*;
 import java.util.LinkedList;
 import cell.Cell;
 
@@ -29,10 +27,6 @@ public class Snake {
 
     public Snake(Cell start, int speed) {
         this(start, Directions.right, speed);
-    }
-
-    public Snake(Cell start) {
-        this(start, 10000000);
     }
 
     public int getSpeed() {

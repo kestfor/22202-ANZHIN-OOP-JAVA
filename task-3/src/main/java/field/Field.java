@@ -3,8 +3,6 @@ package field;
 import cell.Cell;
 import utils.Pair;
 
-import java.awt.*;
-
 public class Field {
     private Cell[][] field;
     private final int cellSize;
