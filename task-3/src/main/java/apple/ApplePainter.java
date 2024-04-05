@@ -24,6 +24,11 @@ public class ApplePainter implements Painter {
         this.image = bufferedImage;
     }
 
+    public ApplePainter(Apple apple) {
+        this.apple = apple;
+        this.image = null;
+    }
+
     @Override
     public void paint(Graphics g) {
         Cell cell = apple.getCell();

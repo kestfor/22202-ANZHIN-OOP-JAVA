@@ -7,6 +7,9 @@ import snake.SnakePainter;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class GamePanel extends JPanel {
 
@@ -15,13 +18,26 @@ public class GamePanel extends JPanel {
     private final ApplePainter applePainter;
     private final GameModel gameModel;
 
-    private final String appleImagePath = "C:\\study\\oop\\java\\task-3\\src\\main\\resources\\apple40px.png";
+    private final String appleImagePath = "./apple40px.png";
 
     public GamePanel(GameModel gameModel) {
+        ApplePainter resApplePainter;
         this.gameModel = gameModel;
         this.fieldPainter = new FieldPainter(gameModel.getField());
         this.snakePainter = new SnakePainter(gameModel.getSnake());
-        this.applePainter = new ApplePainter(gameModel.getApple(), new File(appleImagePath));
+
+        URL resource = getClass().getClassLoader().getResource(appleImagePath);
+        if (resource != null) {
+            try {
+                resApplePainter = new ApplePainter(gameModel.getApple(), new File(resource.toURI()));
+            } catch (URISyntaxException e) {
+                resApplePainter = new ApplePainter(gameModel.getApple());
+            }
+        } else {
+            resApplePainter = new ApplePainter(gameModel.getApple());
+        }
+
+        this.applePainter = resApplePainter;
         this.setBackground(new Color(107, 107, 107));
     }
 

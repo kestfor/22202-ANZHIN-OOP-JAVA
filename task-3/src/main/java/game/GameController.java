@@ -3,6 +3,7 @@ package game;
 import cell.Cell;
 import snake.Snake;
 import snake.SnakeMovementController;
+import sounds.SoundController;
 import utils.Utils;
 
 import java.awt.event.KeyEvent;
@@ -12,12 +13,15 @@ public class GameController implements Runnable, KeyListener {
 
     private final GameModel gameModel;
     private final SnakeMovementController snakeMovementController;
+
+    private final SoundController soundController;
     private final GamePanel gamePanel;
 
     public GameController(GameModel gameModel, GamePanel gamePanel) {
         this.gameModel = gameModel;
         this.gamePanel = gamePanel;
         this.snakeMovementController = new SnakeMovementController(gameModel.getSnake(), gameModel.getField());
+        this.soundController = new SoundController();
     }
 
     public void restart() {
@@ -47,6 +51,7 @@ public class GameController implements Runnable, KeyListener {
                     Cell tail = snakeMovementController.move();
                     if (tail != null) {
                         if (gameModel.getSnake().getHead().equals(gameModel.getApple().getCell())) {
+                            soundController.appleSound();
                             gameModel.getSnake().add(tail);
                             gameModel.setScore(gameModel.getScore() + 1);
                             Cell newCell = Utils.getRandomAvailable(gameModel.getField().getArray(), gameModel.getSnake().getBodyArray());
@@ -63,6 +68,8 @@ public class GameController implements Runnable, KeyListener {
                     }
                 } else {
                     gameModel.setGameState(GameModel.GameState.over);
+                    soundController.pauseMusic();
+                    soundController.crashSound();
                 }
             }
 
@@ -76,10 +83,12 @@ public class GameController implements Runnable, KeyListener {
     private void standardKeyHandle(KeyEvent e) {
         if (gameModel.getGameState() == GameModel.GameState.over || gameModel.getGameState() == GameModel.GameState.win) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                soundController.pauseMusic();
                 this.restart();
             }
         } else if (gameModel.getGameState() == GameModel.GameState.init){
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                soundController.startMusic();
                 this.gameModel.setGameState(GameModel.GameState.active);
             }
         }
@@ -88,9 +97,11 @@ public class GameController implements Runnable, KeyListener {
             switch (gameModel.getGameState()) {
                 case pause:
                     gameModel.setGameState(GameModel.GameState.active);
+                    soundController.resumeMusic();
                     break;
                 case active:
                     gameModel.setGameState(GameModel.GameState.pause);
+                    soundController.pauseMusic();
                     break;
             }
         }
