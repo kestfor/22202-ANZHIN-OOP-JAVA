@@ -117,6 +117,27 @@ public class CommandsTest {
         }
     }
 
+    @Test
+    public void DefineTest() {
+        Command def = new DefineCommand();
+        context = new ExecutionContext();
+        List<String> args = new ArrayList<>();
+        args.add("a");
+        args.add("8");
+        try {
+            def.execute(context, args);
+        } catch (CommandsException e) {
+            System.err.println(e.getLocalizedMessage());
+        }
+        try {
+            double val = context.getNamedArgs().get("a");
+            Assert.assertEquals(8.0, val, 0.0);
+        } catch (EmptyStackException e) {
+            System.err.println(e.getLocalizedMessage());
+        }
+    }
+
+
     @Test(expected = CommandsException.class)
     public void addExceptionTest() throws CommandsException {
         Command command = new AddCommand();
