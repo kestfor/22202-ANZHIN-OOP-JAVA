@@ -1,8 +1,7 @@
-package factory.service.listeners;
+package view.listeners;
 
 import factory.service.Observable;
-import factory.service.events.DealerEvent;
-import factory.service.events.MotorSupplierEvent;
+import view.events.MotorSupplierEvent;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

@@ -15,6 +15,5 @@ public class BodiesSupplier extends Supplier {
     public void deliver() throws InterruptedException {
         sleep(period);
         warehouse.put(new Body(IdsGenerator.generateId()));
-        System.out.println("доставлен кузов");
     }
 }

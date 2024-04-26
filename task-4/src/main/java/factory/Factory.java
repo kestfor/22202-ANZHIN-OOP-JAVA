@@ -9,9 +9,9 @@ import factory.Suppliers.BodiesSupplier;
 import factory.Suppliers.MotorsSupplier;
 import factory.Warehouses.*;
 import factory.service.Observer;
-import factory.service.events.*;
-import factory.service.events.Event;
+import view.events.*;
 import view.FactoryPanel;
+import view.events.Event;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,12 +21,12 @@ public class Factory extends JFrame implements Runnable, Observer {
 
 
     public final ArrayList<Dealer> dealers;
-
     public final Settings settings;
     public final ArrayList<AccessoriesSupplier> accessoriesSuppliers;
     public final BodiesSupplier bodiesSupplier;
     public final MotorsSupplier motorsSupplier;
 
+    public final WarehousesMap warehouses;
     public final CarsWarehouseController carsWarehouseController;
 
     public Factory(ConfigReader configReader, Settings settings) {
@@ -44,13 +44,19 @@ public class Factory extends JFrame implements Runnable, Observer {
         bodiesSupplier = new BodiesSupplier(settings.bodiesSupplierSpeed, bodiesWarehouse);
         motorsSupplier = new MotorsSupplier(settings.motorsSupplierSpeed, motorsWarehouse);
 
-        WarehousesMap warehousesMap = new WarehousesMap(motorsWarehouse, bodiesWarehouse, accessoriesWarehouse, carsWarehouse);
-        TasksController tasksController = new TasksController(configReader.get(ConfigReader.Settings.workers), warehousesMap);
-        carsWarehouseController = new CarsWarehouseController(carsWarehouse, tasksController, 5);
+        warehouses = new WarehousesMap(motorsWarehouse, bodiesWarehouse, accessoriesWarehouse, carsWarehouse);
+
+        TasksController tasksController = new TasksController(configReader.get(ConfigReader.Settings.workers), warehouses);
+        carsWarehouseController = new CarsWarehouseController(carsWarehouse, tasksController);
 
         dealers = new ArrayList<>();
+        boolean log = configReader.get(ConfigReader.Settings.logSale) == 1;
         for (int i = 0; i < configReader.get(ConfigReader.Settings.dealers); i++) {
-            dealers.add(new Dealer(settings.dealerPeriod, carsWarehouseController));
+            if (log) {
+                dealers.add(new Dealer(settings.dealerPeriod, carsWarehouseController, true));
+            } else {
+                dealers.add(new Dealer(settings.dealerPeriod, carsWarehouseController));
+            }
         }
     }
 
@@ -73,7 +79,7 @@ public class Factory extends JFrame implements Runnable, Observer {
 
     public static void main(String[] args) {
         ConfigReader configReader = new ConfigReader();
-        Settings settings = new Settings(1000, 1000, 1000, 1000);
+        Settings settings = new Settings(5000, 2000, 3000, 10000);
         Factory factory = new Factory(configReader, settings);
         FactoryPanel factoryPanel = new FactoryPanel(factory);
         factory.setSize(new Dimension(1080, 720));
@@ -81,6 +87,7 @@ public class Factory extends JFrame implements Runnable, Observer {
         factory.getContentPane().add(factoryPanel);
         factory.setVisible(true);
         factory.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        factory.setResizable(false);
         settings.addObserver(factory);
         factory.run();
     }
@@ -92,21 +99,17 @@ public class Factory extends JFrame implements Runnable, Observer {
             for (AccessoriesSupplier supplier : accessoriesSuppliers) {
                 supplier.setPeriod(this.settings.accessoriesSupplierSpeed);
             }
-            System.out.println("set accessory");
         } else if (event instanceof BodySupplierEvent) {
             this.settings.bodiesSupplierSpeed = event.value * 1000;
             bodiesSupplier.setPeriod(this.settings.bodiesSupplierSpeed);
-            System.out.println("set body");
         } else if (event instanceof DealerEvent) {
             this.settings.dealerPeriod = event.value * 1000;
             for (Dealer dealer : dealers) {
                 dealer.setSpeed(this.settings.dealerPeriod);
             }
-            System.out.println("set dealer");
         } else if (event instanceof MotorSupplierEvent) {
             this.settings.motorsSupplierSpeed = event.value * 1000;
             motorsSupplier.setPeriod(this.settings.motorsSupplierSpeed);
-            System.out.println("set motors");
         }
     }
 }

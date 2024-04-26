@@ -54,8 +54,12 @@ public class ConfigReader {
         for (Object key : jsonObject.keySet()) {
             try {
                 data.put(key.toString(), Integer.parseInt(jsonObject.get(key).toString()));
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage());
+            } catch (NumberFormatException e) {
+                try {
+                    data.put(key.toString(), Boolean.parseBoolean(jsonObject.get(key).toString()) ? 1 : 0);
+                } catch (Exception e1) {
+                    logger.error(e1.getLocalizedMessage());
+                }
             }
         }
     }

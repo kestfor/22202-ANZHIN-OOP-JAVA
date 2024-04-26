@@ -16,4 +16,17 @@ public class Car extends Product{
         this.motor = motor;
         this.accessory = accessory;
     }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public Accessory getAccessory() {
+        return accessory;
+    }
+
+    public Motor getMotor() {
+        return motor;
+    }
 }
+

@@ -14,7 +14,6 @@ public class AccessoriesSupplier extends Supplier {
     public void deliver() throws InterruptedException {
         sleep(period);
         warehouse.put(new Accessory(IdsGenerator.generateId()));
-        System.out.println("доставлены аксессуары");
     }
 }
 

@@ -3,10 +3,6 @@ package factory;
 import factory.service.Observable;
 import factory.service.Observer;
 
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 class Settings extends Observable implements Observer {
     public int accessoriesSupplierSpeed;
     public int bodiesSupplierSpeed;

@@ -2,7 +2,7 @@ package factory.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import factory.service.events.Event;
+import view.events.Event;
 public abstract class Observable {
     private final List<Observer> observers = new ArrayList<>();
 

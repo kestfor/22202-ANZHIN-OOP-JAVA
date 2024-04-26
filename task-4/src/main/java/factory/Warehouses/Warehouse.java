@@ -6,6 +6,8 @@ public class Warehouse<T> extends BlockingQueue<T> {
 
     protected int capacity;
 
+    protected int totalProduced = 0;
+
     public Warehouse(int capacity) {
         this.capacity = capacity;
     }
@@ -18,8 +20,8 @@ public class Warehouse<T> extends BlockingQueue<T> {
         return queue.size() == capacity;
     }
 
-    public boolean isEmpty() {
-        return queue.isEmpty();
+    public int getTotalProduced() {
+        return totalProduced;
     }
 
     @Override
@@ -37,6 +39,7 @@ public class Warehouse<T> extends BlockingQueue<T> {
                 throw new RuntimeException(e);
             }
         }
+        totalProduced++;
         super.put(el);
     }
 

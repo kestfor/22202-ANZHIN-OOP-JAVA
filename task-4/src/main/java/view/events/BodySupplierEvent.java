@@ -1,4 +1,4 @@
-package factory.service.events;
+package view.events;
 
 public class BodySupplierEvent extends Event{
     public BodySupplierEvent(int newValue) {

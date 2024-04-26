@@ -2,6 +2,8 @@ package factory.CarsWarehouseController;
 import factory.Products.*;
 import factory.Warehouses.*;
 
+import static java.lang.Thread.sleep;
+
 public class WorkerTask implements Runnable {
 
     protected final WarehousesMap warehouses;
@@ -16,14 +18,18 @@ public class WorkerTask implements Runnable {
         Motor motor;
         Accessory accessory;
 
+        try {
+            sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         body = (Body) warehouses.get(WarehousesMap.WarehouseNames.bodies).get();
         motor = (Motor)  warehouses.get(WarehousesMap.WarehouseNames.motors).get();
         accessory = (Accessory)  warehouses.get(WarehousesMap.WarehouseNames.accessories).get();
 
         Car car = new Car(body, motor, accessory);
-        System.out.println("Собрана машина");
 
         warehouses.get(WarehousesMap.WarehouseNames.cars).put(car);
-        System.out.println("Машина доставлена на склад");
     }
 }

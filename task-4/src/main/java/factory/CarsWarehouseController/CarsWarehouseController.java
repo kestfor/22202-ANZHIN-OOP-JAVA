@@ -14,7 +14,7 @@ public class CarsWarehouseController extends Thread {
     }
 
     public CarsWarehouseController(CarsWarehouse warehouse, TasksController tasksController) {
-        this(warehouse, tasksController, 10);
+        this(warehouse, tasksController, 5);
     }
     public CarsWarehouse getCarWarehouse() {
         return warehouse;
@@ -23,13 +23,10 @@ public class CarsWarehouseController extends Thread {
     public synchronized void run() {
         while (true) {
             try {
-                System.out.println("контроллер уснул");
                 wait();
-                System.out.println("контроллер проснулся");
                 synchronized (warehouse) {
-                    if (warehouse.getCurrentSize() <= criticalSize) {
+                    if (warehouse.getCurrentSize() < criticalSize) {
                         tasksController.addTasks((criticalSize - warehouse.getCurrentSize()) * 2);
-                        System.out.println("добавлены задачи");
                     }
                 }
             } catch (InterruptedException e) {

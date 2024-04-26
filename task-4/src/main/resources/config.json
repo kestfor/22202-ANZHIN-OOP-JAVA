@@ -5,6 +5,6 @@
   "storageAutoSize": 100,
   "accessorySuppliers": 5,
   "workers": 10,
-  "dealers": 20,
+  "dealers": 5,
   "logSale": true
 }

@@ -14,6 +14,5 @@ public class MotorsSupplier extends Supplier {
     public void deliver() throws InterruptedException {
         sleep(period);
         warehouse.put(new Motor(IdsGenerator.generateId()));
-        System.out.println("доставлен мотор");
     }
 }
