@@ -78,9 +78,10 @@ public class FactoryPanel extends JPanel implements ActionListener {
         TextLayout layout = new TextLayout(data, font, frc);
 
         graphics2D.setColor(Color.WHITE);
+        graphics2D.setFont(font);
         String[] outputs = data.split("\n");
         for (int i = 0; i < outputs.length; i++) {
-            graphics2D.drawString(outputs[i], 400, (int) (400 + i * layout.getBounds().getHeight() + 0.5));
+            graphics2D.drawString(outputs[i], 400, (int) (400 + i * layout.getBounds().getHeight() + 1));
         }
     }
 
