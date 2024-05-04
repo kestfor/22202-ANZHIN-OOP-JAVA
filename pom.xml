@@ -17,6 +17,7 @@
   </properties>
 
   <modules>
+    <module>task-4</module>
     <module>task-3</module>
     <module>task-2</module>
     <module>task-1</module>
