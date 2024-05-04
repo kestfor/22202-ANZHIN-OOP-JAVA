@@ -8,7 +8,7 @@
   <packaging>pom</packaging>
 
   <name>java</name>
-  <url>http://maven.apache.org</url>
+  <url>https://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,6 +18,9 @@
 
   <modules>
     <module>task-4</module>
+    <module>task-3</module>
+    <module>task-2</module>
+    <module>task-1</module>
   </modules>
 
   <dependencies>
