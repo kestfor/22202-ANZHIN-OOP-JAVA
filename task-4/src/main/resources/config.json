@@ -1,8 +1,8 @@
 {
-  "storageBodySize": 100,
-  "storageMotorSize": 100,
-  "storageAccessorySize": 100,
-  "storageAutoSize": 100,
+  "storageBodySize": 20,
+  "storageMotorSize": 20,
+  "storageAccessorySize": 20,
+  "storageAutoSize": 20,
   "accessorySuppliers": 5,
   "workers": 10,
   "dealers": 5,

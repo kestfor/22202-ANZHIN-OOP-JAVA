@@ -3,7 +3,7 @@ package factory;
 import factory.service.Observable;
 import factory.service.Observer;
 
-class Settings extends Observable implements Observer {
+public class Settings extends Observable implements Observer {
     public int accessoriesSupplierSpeed;
     public int bodiesSupplierSpeed;
     public int motorsSupplierSpeed;
