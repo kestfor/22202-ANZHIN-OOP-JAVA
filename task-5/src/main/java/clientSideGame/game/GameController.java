@@ -22,7 +22,6 @@ public class GameController extends Observable implements Runnable, KeyListener,
     private final SoundController soundController;
     private final GamePanel gamePanel;
     private final Client client;
-    private long tickNum = 0;
 
     public GameController(GameModel gameModel, GamePanel gamePanel, Client client) {
         this.timer = new Timer(gameModel.getSnakesManager().getSpeed(), this);
@@ -40,7 +39,6 @@ public class GameController extends Observable implements Runnable, KeyListener,
         notify(new NewAppleEvent(client.getClientId(), gameModel.getApplePosition()));
         this.gameModel.setGameState(GameModel.GameState.init);
         this.timer.setDelay(gameModel.getSnakesManager().getSpeed());
-        tickNum = 0;
     }
 
     @Override
@@ -58,7 +56,6 @@ public class GameController extends Observable implements Runnable, KeyListener,
     }
 
     public void pauseGame() {
-
         gameModel.setGameState(GameModel.GameState.pause);
         soundController.pauseMusic();
     }
@@ -161,6 +158,7 @@ public class GameController extends Observable implements Runnable, KeyListener,
                 gameModel.getSnakesManager().getSnake(snakeWithApple).add(tails.get(snakeWithApple));
                 Cell newCell = Utils.getRandomAvailable(gameModel.getField().getArray(), gameModel.getSnakesManager().getTakenCells());
                 if (newCell != null) {
+                    gameModel.getApple().setCell(newCell);
                     if (snakeWithApple == client.getClientId()) {
                         notify(new NewAppleEvent(client.getClientId(), gameModel.getApplePosition()));
                     }
