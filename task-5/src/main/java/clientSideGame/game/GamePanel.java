@@ -59,15 +59,6 @@ public class GamePanel extends JPanel implements ActionListener {
         g.drawString("Pause", x - 100, y);
     }
 
-    private void paintScore(Graphics g) {
-        g.setColor(new Color(255, 255, 255));
-        g.setFont(new Font("Times New Roman", Font.BOLD, 50));
-        int x = 0;
-        int y = 50;
-
-        g.drawString("Score: " + gameModel.getScore(), x, y);
-    }
-
     private void paintGameInit(Graphics g) {
         g.setColor(new Color(204, 141, 141));
         g.setFont(new Font("Times New Roman", Font.BOLD, 50));
@@ -93,7 +84,7 @@ public class GamePanel extends JPanel implements ActionListener {
         int x = this.getWidth() / 2;
         int y = 100;
         int playerId = gameModel.getSnakesManager().getIdsOfAliveSnakes().get(0);
-        g.drawString("Player " + (playerId + 1) + " won", x - 200, y);
+        g.drawString("Player " + (playerId + 1) + " won", x - 150, y);
     }
 
     @Override
@@ -113,9 +104,6 @@ public class GamePanel extends JPanel implements ActionListener {
         for (SnakePainter snakePainter : snakePainters) {
             snakePainter.paint(g);
         }
-
-        paintScore(g);
-
 
         switch (gameModel.getGameState()) {
             case pause:

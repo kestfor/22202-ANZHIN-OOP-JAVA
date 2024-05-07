@@ -35,7 +35,7 @@ public class SnakeGame extends JFrame implements Observer {
         SnakeGame snakeGame = new SnakeGame();
 
         try {
-            snakeGame.client = new Client("localhost", 8080);
+            snakeGame.client = new Client("localhost", 8081);
         } catch (IOException exception) {
             System.out.println(exception.getLocalizedMessage());
             return;

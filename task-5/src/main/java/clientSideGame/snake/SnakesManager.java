@@ -71,7 +71,6 @@ public class SnakesManager {
         for (Map.Entry<Integer, Pair<Snake, OnlineSnakeMoveController>> snakeData : this.snakesData.entrySet()) {
             if (snakeNum != snakeData.getKey()) {
                 boolean collision = !snakesData.get(snakeNum).second.isNotCollisionWithSnake(snakeData.getValue().first);
-                System.out.println("snake " + snakeNum +  "collision " + collision + " with snake " + snakeData.getKey());
                 if (collision) {
                     snakesData.get(snakeNum).second.setCollision();
                     return true;

@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
 public class GameServer {
 
     public static final int MAX_SIZE = 4;
-    public static final int PORT = 8080;
+    public static final int PORT = 8081;
 
     public static final PriorityQueue<Integer> AvailableIds = new PriorityQueue<Integer>(){{
         for (int i = 0; i < MAX_SIZE; i++) {
