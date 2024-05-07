@@ -17,10 +17,10 @@
   </properties>
 
   <modules>
+    <module>task-5</module>
     <module>task-3</module>
     <module>task-2</module>
     <module>task-1</module>
-    <module>task-5</module>
   </modules>
 
   <dependencies>
