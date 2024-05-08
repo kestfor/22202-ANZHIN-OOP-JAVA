@@ -1,15 +1,21 @@
 package socketGameMessage.events;
 
 import events.Event;
+import socketGameMessage.SocketGameMessage;
 
-public class NewPlayerEvent extends Event {
-    private final int clientId;
+public class NewPlayerEvent extends SocketEvent {
 
     public NewPlayerEvent(int clientId) {
-        this.clientId = clientId;
+        super(clientId);
     }
 
-    public int getClientId() {
-        return clientId;
+    public NewPlayerEvent(String rawString) {
+        super(rawString);
     }
+
+    @Override
+    public String toString() {
+        return SocketGameMessage.types.newPlayerEvent.ordinal() + delimiter + super.toString();
+    }
+
 }

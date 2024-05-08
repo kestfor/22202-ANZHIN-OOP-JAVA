@@ -1,15 +1,21 @@
 package socketGameMessage.events;
 
 import events.Event;
+import socketGameMessage.SocketGameMessage;
 
-public class PauseEvent extends Event {
-    private final int clientId;
+public class PauseEvent extends SocketEvent {
 
     public PauseEvent(int clientId) {
-        this.clientId = clientId;
+        super(clientId);
     }
 
-    public int getClientId() {
-        return clientId;
+    public PauseEvent(String rawString) {
+        super(rawString);
     }
+
+    @Override
+    public String toString() {
+        return SocketGameMessage.types.pauseEvent.ordinal() + delimiter + super.toString();
+    }
+
 }

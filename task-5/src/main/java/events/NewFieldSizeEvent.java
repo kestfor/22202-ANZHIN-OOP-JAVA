@@ -1,6 +1,6 @@
 package events;
 
-import clientSideGame.utils.Pair;
+import utils.Pair;
 
 public class NewFieldSizeEvent extends Event {
 

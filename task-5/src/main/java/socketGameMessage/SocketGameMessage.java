@@ -1,12 +1,25 @@
 package socketGameMessage;
 
-import clientSideGame.snake.Snake;
-import events.Event;
 import socketGameMessage.events.*;
-import utils.Pair;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 public class SocketGameMessage {
     private String message;
+
+    protected static HashMap<types, Class> map = new HashMap<types, Class>() {{
+        put(types.directionEvent, DirectionEvent.class);
+        put(types.pauseEvent, PauseEvent.class);
+        put(types.startEvent, StartEvent.class);
+        put(types.endEvent, EndEvent.class);
+        put(types.restartEvent, RestartEvent.class);
+        put(types.newAppleEvent, NewAppleEvent.class);
+        put(types.newPlayerEvent, NewPlayerEvent.class);
+        put(types.exitPlayerEvent, ExitPlayerEvent.class);
+        put(types.tickUpdate, TickUpdate.class);
+    }};
 
     public enum types {
         directionEvent,
@@ -16,7 +29,8 @@ public class SocketGameMessage {
         restartEvent,
         newAppleEvent,
         newPlayerEvent,
-        exitPlayerEvent
+        exitPlayerEvent,
+        tickUpdate
     }
 
     @Override
@@ -24,49 +38,21 @@ public class SocketGameMessage {
         return message;
     }
 
-    public Event getEvent() {
-        String[] tokens = message.split(" ");
+    public SocketEvent getEvent() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        String[] tokens = message.split(String.valueOf(SocketEvent.delimiter));
         types type = types.values()[Integer.parseInt(tokens[0])];
-        switch (type) {
-            case directionEvent:
-                return new DirectionEvent(Integer.parseInt(tokens[1]), Snake.Directions.values()[Integer.parseInt(tokens[2])]);
-            case pauseEvent:
-                return new PauseEvent(Integer.parseInt(tokens[1]));
-            case startEvent:
-                return new StartEvent(Integer.parseInt(tokens[1]));
-            case endEvent:
-                return new EndEvent(Integer.parseInt(tokens[1]));
-            case restartEvent:
-                return new RestartEvent(Integer.parseInt(tokens[1]));
-            case newPlayerEvent:
-                return new NewPlayerEvent(Integer.parseInt(tokens[1]));
-            case exitPlayerEvent:
-                return new ExitPlayerEvent(Integer.parseInt(tokens[1]));
-            case newAppleEvent:
-                return new NewAppleEvent(Integer.parseInt(tokens[1]), new Pair<>(Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3])));
-            default:
-                return null;
+        StringBuilder rawString= new StringBuilder();
+        for (int i = 1; i < tokens.length; i++) {
+            rawString.append(SocketEvent.delimiter).append(tokens[i]);
         }
+        rawString.deleteCharAt(0);
+        Class<?> cl = map.get(type);
+        Constructor<?> cons = cl.getConstructor(String.class);
+        return (SocketEvent) cons.newInstance(rawString.toString());
     }
 
-    public SocketGameMessage(Event event) {
-        if (event instanceof DirectionEvent) {
-            this.message = types.directionEvent.ordinal() + " " + ((DirectionEvent) event).getSnakeNum() + " " + ((DirectionEvent) event).getDirection().ordinal();
-        } else if (event instanceof PauseEvent) {
-            this.message = types.pauseEvent.ordinal() + " " + ((PauseEvent) event).getClientId();
-        } else if (event instanceof StartEvent) {
-            this.message = types.startEvent.ordinal() + " " + ((StartEvent) event).getClientId();
-        } else if (event instanceof EndEvent) {
-            this.message = types.endEvent.ordinal() + " " + ((EndEvent) event).getClientId();
-        } else if (event instanceof RestartEvent) {
-            this.message = types.restartEvent.ordinal() + " " + ((RestartEvent) event).getClientId();
-        } else if (event instanceof NewPlayerEvent) {
-            this.message = types.newPlayerEvent.ordinal() + " " + ((NewPlayerEvent) event).getClientId();
-        } else if (event instanceof ExitPlayerEvent) {
-            this.message = types.exitPlayerEvent.ordinal() + " " + ((ExitPlayerEvent) event).getClientId();
-        } else if (event instanceof NewAppleEvent) {
-            this.message = types.newAppleEvent.ordinal() + " " + ((NewAppleEvent) event).getClientId() + " " + ((NewAppleEvent) event).getPosition().first + " " + ((NewAppleEvent) event).getPosition().second;
-        }
+    public SocketGameMessage(SocketEvent event) {
+        this.message = event.toString();
     }
 
 

@@ -1,5 +1,12 @@
 package server;
 
+import events.Event;
+import service.Observable;
+import service.Observer;
+import socketGameMessage.SocketGameMessage;
+import socketGameMessage.events.ExitPlayerEvent;
+import socketGameMessage.events.SocketEvent;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,7 +15,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-public class CommunicationHandler extends Thread {
+public class CommunicationHandler extends Observable implements Runnable, Observer {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
@@ -18,7 +25,6 @@ public class CommunicationHandler extends Thread {
         this.socket = socket;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        start();
         handShake();
     }
 
@@ -31,6 +37,7 @@ public class CommunicationHandler extends Thread {
     protected void removeClient() {
         GameServer.communicationHandlers.remove(this);
         GameServer.AvailableIds.add(clientId);
+        notify(new ExitPlayerEvent(clientId));
         System.out.println("client disconnected");
     }
 
@@ -45,8 +52,12 @@ public class CommunicationHandler extends Thread {
                     removeClient();
                     break;
                 }
-                for (CommunicationHandler handler : GameServer.communicationHandlers) {
-                    handler.sendMessage(data);
+                SocketGameMessage msg = new SocketGameMessage(data);
+                System.out.println("received: " + msg);
+                try {
+                    notify(msg.getEvent());
+                } catch (Exception e) {
+                    System.err.println(e.getLocalizedMessage());
                 }
             } catch (IOException e) {
                 if (e instanceof SocketException) {
@@ -57,10 +68,21 @@ public class CommunicationHandler extends Thread {
                 }
             }
         }
+        try {
+            this.finalize();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void sendMessage(String message) {
         out.println(message);
+        System.out.println("sent message: " + message);
     }
 
+
+    @Override
+    public void actionPerformed(Event event) {
+        sendMessage(event.toString());
+    }
 }

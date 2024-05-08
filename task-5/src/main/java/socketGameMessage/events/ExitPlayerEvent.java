@@ -1,15 +1,20 @@
 package socketGameMessage.events;
 
-import events.Event;
 
-public class ExitPlayerEvent extends Event {
-    private final int clientId;
+import socketGameMessage.SocketGameMessage;
+
+public class ExitPlayerEvent extends SocketEvent {
 
     public ExitPlayerEvent(int clientId) {
-        this.clientId = clientId;
+        super(clientId);
     }
 
-    public int getClientId() {
-        return clientId;
+    public ExitPlayerEvent(String rawString) {
+        super(rawString);
+    }
+
+    @Override
+    public String toString() {
+        return SocketGameMessage.types.exitPlayerEvent.ordinal() + delimiter + super.toString();
     }
 }

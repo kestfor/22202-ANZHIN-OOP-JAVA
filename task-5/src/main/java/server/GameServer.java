@@ -1,8 +1,12 @@
 package server;
 
+import game.GameModel;
+import fullGames.ServerSnakeGame;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class GameServer {
@@ -16,18 +20,41 @@ public class GameServer {
         }
     }};
 
-    public static final BlockingQueue<CommunicationHandler> communicationHandlers = new BlockingQueue<>(MAX_SIZE);
+    public static final ArrayList<CommunicationHandler> communicationHandlers = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
+    public void run() throws IOException {
         try (ServerSocket server = new ServerSocket(PORT)) {
+            ServerSnakeGame serverSnakeGame = new ServerSnakeGame();
+            serverSnakeGame.attachServer(this);
+            serverSnakeGame.run();
+
             while (true) {
                 Socket newSocket = server.accept();
                 try {
-                    communicationHandlers.put(new CommunicationHandler(newSocket));
-                } catch (IOException e) {
+
+                    if (serverSnakeGame.gameModel.getGameState() != GameModel.GameState.init || communicationHandlers.size() == MAX_SIZE) {
+                        newSocket.close();
+                        continue;
+                    }
+
+                    CommunicationHandler newHandler = new CommunicationHandler(newSocket);
+                    communicationHandlers.add(newHandler);
+
+                    newHandler.addObserver(serverSnakeGame);
+                    serverSnakeGame.serverGameController.addObserver(newHandler);
+
+                    Thread thread = new Thread(newHandler);
+                    thread.start();
+
+                } catch (IOException  e) {
                     newSocket.close();
                 }
             }
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        GameServer gameServer = new GameServer();
+        gameServer.run();
     }
 }
