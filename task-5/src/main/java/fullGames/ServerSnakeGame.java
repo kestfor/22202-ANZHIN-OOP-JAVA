@@ -4,8 +4,6 @@ import events.Event;
 import game.ServerGameController;
 import game.GameModel;
 import game.Settings;
-import menu.FieldMenuSection;
-import menu.SnakeSpeedMenuSection;
 import server.GameServer;
 import service.Observer;
 import socketGameMessage.events.*;

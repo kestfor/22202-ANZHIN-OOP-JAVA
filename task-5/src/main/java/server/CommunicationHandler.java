@@ -5,20 +5,17 @@ import service.Observable;
 import service.Observer;
 import socketGameMessage.SocketGameMessage;
 import socketGameMessage.events.ExitPlayerEvent;
-import socketGameMessage.events.SocketEvent;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 
 public class CommunicationHandler extends Observable implements Runnable, Observer {
-    private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+    private final Socket socket;
+    private final BufferedReader in;
+    private final PrintWriter out;
     private int clientId;
 
     public CommunicationHandler(Socket socket) throws IOException {
@@ -69,6 +66,7 @@ public class CommunicationHandler extends Observable implements Runnable, Observ
             }
         }
         try {
+            socket.close();
             this.finalize();
         } catch (Throwable e) {
             throw new RuntimeException(e);

@@ -5,17 +5,12 @@ import service.Observable;
 import service.Observer;
 import socketGameMessage.SocketGameMessage;
 import socketGameMessage.events.SocketEvent;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.net.SocketException;
-
-import static java.lang.Thread.sleep;
-
 
 public class Client extends Observable implements Observer, Runnable {
 
@@ -63,7 +58,7 @@ public class Client extends Observable implements Observer, Runnable {
 
     public void sendMessage(SocketEvent event) throws IOException {
         SocketGameMessage msg = new SocketGameMessage(event);
-        out.println(msg.toString());
+        out.println(msg);
         System.out.println("Sent message: " + msg);
     }
 

@@ -48,13 +48,6 @@ public class GameModel {
     }
 
     public Pair<Integer, Integer> getApplePosition() {
-//        for (int i = 0; i < field.getArray().length; i++) {
-//            for (int j = 0; j < field.getArray()[i].length; j++) {
-//                if (field.getCell(i, j).equals(apple.getCell())) {
-//                    return new Pair<>(i, j);
-//                }
-//            }
-//        }
         return apple.getCoords(field);
     }
 

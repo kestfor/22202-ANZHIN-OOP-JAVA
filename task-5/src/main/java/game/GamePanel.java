@@ -16,25 +16,17 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class GamePanel extends JPanel implements Observer {
+public class GamePanel extends JPanel {
 
     private final FieldPainter fieldPainter;
-    //private final ArrayList<SnakePainter> snakePainters;
     private final ApplePainter applePainter;
     private final GameModel gameModel;
-    //private final Timer timer;
     private final String appleImagePath = "./apple40px.png";
 
     public GamePanel(GameModel gameModel) {
-        //this.timer = new Timer(100, this);
         ApplePainter resApplePainter;
         this.gameModel = gameModel;
         this.fieldPainter = new FieldPainter(gameModel.getField());
-        //this.snakePainters = new ArrayList<>();
-//        for (int i = 0; i < gameModel.getSnakesManager().getSnakesNum(); i++) {
-//            this.snakePainters.add(new SnakePainter(gameModel.getSnakesManager().getSnake(i), SnakePainter.colors.get(SnakesManager.StartLocation.values()[i])));
-//        }
-
         URL resource = getClass().getClassLoader().getResource(appleImagePath);
         if (resource != null) {
             try {
@@ -65,7 +57,7 @@ public class GamePanel extends JPanel implements Observer {
 
         int x = this.getWidth() / 2;
         int y = 100;
-        g.drawString("press enter to start", x - 190, y);
+        g.drawString("Press enter to start", x - 190, y);
     }
 
     private void paintGameOver(Graphics g) {
@@ -84,7 +76,7 @@ public class GamePanel extends JPanel implements Observer {
         int x = this.getWidth() / 2;
         int y = 100;
         int playerId = gameModel.getSnakesManager().getIdsOfAliveSnakes().get(0);
-        g.drawString("Player " + (playerId + 1) + " won", x - 150, y);
+        g.drawString("Player " + (playerId + 1) + " won", x - 130, y);
     }
 
     @Override
@@ -118,13 +110,6 @@ public class GamePanel extends JPanel implements Observer {
             case win:
                 paintGameWin(g);
                 break;
-        }
-    }
-
-    @Override
-    public void actionPerformed(Event event) {
-        if (event instanceof TickUpdate) {
-
         }
     }
 }

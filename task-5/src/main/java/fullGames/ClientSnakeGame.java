@@ -3,8 +3,6 @@ package fullGames;
 import client.Client;
 import events.Event;
 import game.*;
-import menu.FieldMenuSection;
-import menu.SnakeSpeedMenuSection;
 import service.Observer;
 import socketGameMessage.events.*;
 
@@ -43,7 +41,6 @@ public class ClientSnakeGame extends JFrame implements Observer, Runnable {
     }
 
     public void run() {
-        clientGameController.run();
         clientGameController.notify(new NewPlayerEvent(client.getClientId()));
     }
 

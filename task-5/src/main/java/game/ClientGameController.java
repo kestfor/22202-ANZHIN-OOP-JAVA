@@ -10,7 +10,7 @@ import utils.Pair;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class ClientGameController extends Observable implements KeyListener, Runnable {
+public class ClientGameController extends Observable implements KeyListener {
 
     private final GameModel gameModel;
     private final GamePanel gamePanel;
@@ -176,10 +176,5 @@ public class ClientGameController extends Observable implements KeyListener, Run
             snake.setDirection(update.getSnakesDirections().get(snakeId));
         }
         gamePanel.repaint();
-    }
-
-    @Override
-    public void run() {
-
     }
 }

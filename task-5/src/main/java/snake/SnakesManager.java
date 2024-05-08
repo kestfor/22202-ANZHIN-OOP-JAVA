@@ -14,7 +14,7 @@ public class SnakesManager {
     private final Field field;
 
     public enum StartLocation {
-        topLeft, topRight, bottomLeft, bottomRight;
+        topLeft, topRight, bottomLeft, bottomRight
     }
 
 
@@ -55,7 +55,7 @@ public class SnakesManager {
 
 
     protected Pair<Cell, Snake.Directions> getStartSettings(int snakeNum) {
-        Pair<Cell, Snake.Directions> result = null;
+        Pair<Cell, Snake.Directions> result;
         StartLocation startLocation = StartLocation.values()[snakeNum];
         Snake.Directions startDirection = null;
         Cell startCell = null;
@@ -146,10 +146,6 @@ public class SnakesManager {
             sum += snakeData.getValue().first.getBody().size();
         }
         return sum;
-    }
-
-    public int getSpeed() {
-        return snakesData.get(0).first.getSpeed();
     }
 
     public void reset() {
