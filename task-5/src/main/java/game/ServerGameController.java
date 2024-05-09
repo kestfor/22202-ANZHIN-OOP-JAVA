@@ -21,7 +21,6 @@ public class ServerGameController extends Observable implements ActionListener {
     }
 
     public void restart() {
-        this.gameModel.setScore(0);
         this.gameModel.getSnakesManager().reset();
         this.gameModel.getApple().setCell(Utils.getRandomAvailable(this.gameModel.getField().getArray(), this.gameModel.getSnakesManager().getTakenCells()));
         notify(new NewAppleEvent(gameModel.getApplePosition()));
@@ -85,9 +84,6 @@ public class ServerGameController extends Observable implements ActionListener {
             int snakeWithApple = gameModel.getSnakesManager().getSnakeNumByHead(gameModel.getApple().getCell());
 
             if (snakeWithApple != -1) {
-                System.out.println(snakeWithApple);
-                System.out.println(gameModel.getSnakesManager().getIdsOfAliveSnakes());
-                //soundController.appleSound();
                 gameModel.getSnakesManager().getSnake(snakeWithApple).add(tails.get(snakeWithApple));
                 Cell newCell = Utils.getRandomAvailable(gameModel.getField().getArray(), gameModel.getSnakesManager().getTakenCells());
                 if (newCell != null) {
@@ -118,6 +114,9 @@ public class ServerGameController extends Observable implements ActionListener {
     public void handleExitPlayerEvent(ExitPlayerEvent event) {
         notify(event);
         gameModel.getSnakesManager().removeSnake(event.getClientId());
+        if (gameModel.getSnakesManager().getSnakesNum() == 0) {
+            restart();
+        }
     }
 
     public void handleDirectionEvent(DirectionEvent event) {

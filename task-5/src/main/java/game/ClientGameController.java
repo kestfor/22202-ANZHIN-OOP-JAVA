@@ -143,7 +143,6 @@ public class ClientGameController extends Observable implements KeyListener {
 
     public void handleRestartEvent() {
         soundController.pauseMusic();
-        this.gameModel.setScore(0);
         this.gameModel.getSnakesManager().reset();
         this.gameModel.setGameState(GameModel.GameState.init);
         gamePanel.repaint();

@@ -27,7 +27,6 @@ public class CommunicationHandler extends Observable implements Runnable, Observ
 
     protected void handShake() {
         clientId = GameServer.AvailableIds.remove();
-        System.out.println("Handshake sent, id: " + clientId);
         this.out.println(clientId);
     }
 
@@ -35,7 +34,6 @@ public class CommunicationHandler extends Observable implements Runnable, Observ
         GameServer.communicationHandlers.remove(this);
         GameServer.AvailableIds.add(clientId);
         notify(new ExitPlayerEvent(clientId));
-        System.out.println("client disconnected");
     }
 
 
@@ -50,7 +48,6 @@ public class CommunicationHandler extends Observable implements Runnable, Observ
                     break;
                 }
                 SocketGameMessage msg = new SocketGameMessage(data);
-                System.out.println("received: " + msg);
                 try {
                     notify(msg.getEvent());
                 } catch (Exception e) {
@@ -75,7 +72,6 @@ public class CommunicationHandler extends Observable implements Runnable, Observ
 
     public void sendMessage(String message) {
         out.println(message);
-        System.out.println("sent message: " + message);
     }
 
 

@@ -29,7 +29,6 @@ public class Client extends Observable implements Observer, Runnable {
         } else {
             this.clientId = clientId;
         }
-        System.out.println("Successfully connected to " + host + ":" + port + ", clientId: " + clientId);
     }
 
     public int getClientId() {
@@ -59,7 +58,6 @@ public class Client extends Observable implements Observer, Runnable {
     public void sendMessage(SocketEvent event) throws IOException {
         SocketGameMessage msg = new SocketGameMessage(event);
         out.println(msg);
-        System.out.println("Sent message: " + msg);
     }
 
     @Override
@@ -80,7 +78,6 @@ public class Client extends Observable implements Observer, Runnable {
             SocketEvent msg;
             try {
                 msg = readMessage();
-                System.out.println("received: " + msg);
                 notify(msg);
             } catch (Exception e) {
                 if (e instanceof SocketException) {

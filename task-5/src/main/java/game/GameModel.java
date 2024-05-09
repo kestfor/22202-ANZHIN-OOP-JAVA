@@ -14,7 +14,6 @@ public class GameModel {
     private final Apple apple;
     private final int startSpeed;
     private GameState gameState;
-    private int score;
 
     public enum GameState {
         init,
@@ -30,7 +29,6 @@ public class GameModel {
         int centerY = (settings.windowHeight - settings.getCellSize() * settings.getSize().first) / 2;
 
         this.gameState = GameState.init;
-        this.score = 0;
 
         field = new Field(centerX, centerY, settings.getSize().first, settings.getSize().second, settings.getCellSize());
         snakesManager = new SnakesManager(field);
@@ -65,14 +63,6 @@ public class GameModel {
 
     public Apple getApple() {
         return apple;
-    }
-
-    public void setScore(int newScore) {
-        this.score = newScore;
-    }
-
-    public int getScore() {
-        return score;
     }
 
 }
