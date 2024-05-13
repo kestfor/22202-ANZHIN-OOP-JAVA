@@ -1,0 +1,10 @@
+{
+  "storageBodySize": 100,
+  "storageMotorSize": 100,
+  "storageAccessorySize": 100,
+  "storageAutoSize": 100,
+  "accessorySuppliers": 5,
+  "workers": 10,
+  "dealers": 20,
+  "logSale": 1
+}
